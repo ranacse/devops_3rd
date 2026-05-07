@@ -1,0 +1,30 @@
+trigger:
+- main
+
+pool:
+  vmImage: ubuntu-latest
+
+variables:
+  # এখানে আপনার রিসোর্সের নামগুলো বসাতে হবে
+  dockerRegistryServiceConnection: 'acr-conn' # আপনার তৈরি করা কানেকশন নাম
+  imageRepository: 'dataengine-app'
+  containerRegistry: 'your-acr-name.azurecr.io' # আপনার ACR এর নাম এখানে দিন
+  dockerfilePath: '$(Build.SourcesDirectory)/Dockerfile'
+  tag: '$(Build.BuildId)'
+
+stages:
+- stage: Build
+  displayName: Build and push stage
+  jobs:
+  - job: Build
+    displayName: Build
+    steps:
+    - task: Docker@2
+      displayName: Build and push an image to container registry
+      inputs:
+        command: buildAndPush
+        repository: $(imageRepository)
+        dockerfile: $(dockerfilePath)
+        containerRegistry: $(dockerRegistryServiceConnection)
+        tags: |
+          $(tag)
