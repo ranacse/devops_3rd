@@ -1,0 +1,14 @@
+trigger:
+- main
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+steps:
+- script: echo "Hello Saifur Rahman! Your pipeline is working."
+  displayName: 'Run a simple script'
+
+- script: |
+    echo "This is a simple test without any Docker or complex settings."
+    echo "We are just checking if the pipeline can save and run."
+  displayName: 'My Second Step'
